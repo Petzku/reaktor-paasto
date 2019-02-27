@@ -28,7 +28,7 @@ def initialize_database():
     conn.commit()
     conn.close()
 
-def get_all_countries_data(time_start=None, time_end=None, per_capita=False):
+def get_all_countries_data(year_start=None, year_end=None, per_capita=False):
     conn = sqlite3.connect(DB_FILE)
     cur = conn.cursor()
 
@@ -37,13 +37,13 @@ def get_all_countries_data(time_start=None, time_end=None, per_capita=False):
     else:
         query = "SELECT code, year, co2 FROM country_data WHERE ? <= year AND year <= ?"
 
-    cur.execute(query, (time_start or 0, time_end or 999999))
+    cur.execute(query, (year_start or 0, year_end or 999999))
     result = cur.fetchall()
 
     conn.close()
     return result
 
-def get_one_country_data(country_code, time_start=None, time_end=None, per_capita=False):
+def get_one_country_data(country_code, year_start=None, year_end=None, per_capita=False):
     conn = sqlite3.connect(DB_FILE)
     cur = conn.cursor()
 
@@ -52,7 +52,7 @@ def get_one_country_data(country_code, time_start=None, time_end=None, per_capit
     else:
         query = "SELECT code, year, co2 FROM country_data WHERE code = ? AND ? <= year AND year <= ?"
 
-    cur.execute(query, (country_code, time_start or 0, time_end or 999999))
+    cur.execute(query, (country_code, year_start or 0, year_end or 999999))
     result = cur.fetchall()
 
     conn.close()
