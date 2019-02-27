@@ -18,15 +18,10 @@ def read_metadata_csv(csvfile):
         metadata.append(row)
     return metadata
 
-def load_data(data_pop_filename, data_co2_filename, meta_country_filename):
-    with open(data_pop_filename) as popfile:
-        popdata = {x['Country Code']: x for x in read_data_csv(popfile)}
-    with open(data_co2_filename) as co2file:
-        co2data = {x['Country Code']: x for x in read_data_csv(co2file)}
-
-    # each row starts with '\ufeff' if encoding isn't set
-    with open(meta_country_filename, encoding='utf-8-sig') as countryfile:
-        countrydata = read_metadata_csv(countryfile)
+def load_data(popfile, co2file, countryfile):
+    popdata = {x['Country Code']: x for x in read_data_csv(popfile)}
+    co2data = {x['Country Code']: x for x in read_data_csv(co2file)}
+    countrydata = read_metadata_csv(countryfile)
     
     countries = {}
     for row in countrydata:
