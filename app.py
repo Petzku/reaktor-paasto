@@ -17,6 +17,8 @@ def create_app():
     @app.route('/api/all')
     def request_all_countries():
         """ get information about all countries """
+        update_data()
+
         year_start = int(request.args.get('start', 0))
         year_end = int(request.args.get('end', 0))
         per_capita = bool(request.args.get('percapita', None))
@@ -27,6 +29,8 @@ def create_app():
     @app.route('/api/country/<country_code>')
     def request_one_country(country_code):
         """ get information about a single country """
+        update_data()
+
         year_start = int(request.args.get('start', 0))
         year_end = int(request.args.get('end', 0))
         per_capita = bool(request.args.get('percapita', None))
@@ -37,6 +41,8 @@ def create_app():
     @app.route('/api/meta/all')
     def request_country_metadata():
         """ get metadata of all countries """
+        update_data()
+
         metadata = database.get_countries_info()
 
         response_data = {code: {'name': name, 'region': region, 'income': income, 'notes': notes}
