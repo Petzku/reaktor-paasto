@@ -12,7 +12,7 @@ def get_dataset_files():
     co2_resp = urlopen(DATASET_CO2_URL)
     with ZipFile(BytesIO(co2_resp.read())) as zipfile:
         data_co2_filename = [x for x in zipfile.namelist() if x.startswith("API_EN")][0]
-        data_co2_file = zipfile.open(co2_filename)
+        data_co2_file = zipfile.open(data_co2_filename)
         for i in range(4):
             # first four lines are useless, and WILL break the CSV reader, so skip them
             data_co2_file.readline()
@@ -20,7 +20,7 @@ def get_dataset_files():
         # however, this method of extracting the csv gives us a file in byte mode, which DictReader can't parse.
         data_co2_file = codecs.iterdecode(data_co2_file, 'utf-8')
 
-        meta_country_filename = [x for x in zipfile.namelist() if x.startswith("Metadata_Country")]
+        meta_country_filename = [x for x in zipfile.namelist() if x.startswith("Metadata_Country")][0]
         # this one is encoded in utf-8-sig for some reason, others seem to be utf-8
         meta_country_file = codecs.iterdecode(zipfile.open(meta_country_filename), 'utf-8-sig')
 

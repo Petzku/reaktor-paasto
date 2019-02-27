@@ -60,7 +60,7 @@ def update_data():
     if last_update < datetime.date.today():
         popfile, co2file, countryfile = data_fetch.get_dataset_files()
 
-        new_data = load_data(popfile, co2file, countryfile)
+        new_data = handle_csv.load_data(popfile, co2file, countryfile)
         popfile.close()
         co2file.close()
         countryfile.close()

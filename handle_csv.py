@@ -3,9 +3,6 @@ import csv
 
 def read_data_csv(csvfile):
     data = []
-    # first four lines don't contain relevant data
-    for i in range(4):
-        csvfile.readline()
     reader = csv.DictReader(csvfile)
     for row in reader:
         data.append(row)
@@ -27,7 +24,7 @@ def load_data(popfile, co2file, countryfile):
     for row in countrydata:
         code = row['Country Code']
 
-        # first four rows don't have important data: country code & name, indicator name & code
+        # first four columns don't have important data: country code & name, indicator name & code
         years = list(popdata[code].keys())[4:]  # both sets have same starting year
 
         data = {int(year): (float(co2data[code][year]) if co2data[code][year] else None,
