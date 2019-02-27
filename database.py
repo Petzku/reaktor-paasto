@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sqlite3
 
-DB_FILE = "data.db"
+DB_FILE = "co2_population_data.db"
 
 def initialize_database():
     conn = sqlite3.connect(DB_FILE)
