@@ -5,6 +5,11 @@ body {
 div.chart-container {
     position: relative;
     margin: auto;
-    height:80vh;
+    height:70vh;
     width:80vw
+}
+
+div.form-container {
+    text-align: center;
+    padding: 0 20%;
 }
