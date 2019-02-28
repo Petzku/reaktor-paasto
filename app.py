@@ -23,7 +23,14 @@ def create_app():
         per_capita = bool(request.args.get('percapita', None))
 
         data = database.get_all_countries_data(year_start, year_end, per_capita)
-        return jsonify(data)
+
+        data_by_code = {}
+        for code, year, value in data:
+            if code not in data_by_code:
+                data_by_code[code] = []
+            data_by_code[code].append((year, value))
+
+        return jsonify(data_by_code)
 
     @app.route('/api/country/<country_code>')
     def request_one_country(country_code):
@@ -35,7 +42,12 @@ def create_app():
         per_capita = bool(request.args.get('percapita', None))
 
         data = database.get_one_country_data(country_code, year_start, year_end, per_capita)
-        return jsonify(data)
+
+        data_by_code = {data[0][0]: []}
+        for code, year, value in data:
+            data_by_code[code].append((year, value))
+
+        return jsonify(data_by_code)
 
     @app.route('/api/meta/all')
     def request_country_metadata():
