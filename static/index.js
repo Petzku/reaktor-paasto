@@ -9,10 +9,34 @@ $(document).ready(function(){
     $("form#searchform").submit(function(e) {
         e.preventDefault();
 
-        $.get("/api/country/" + $("#countryselect").val() + "?" + $("#searchform").serialize(), function(data){
-            // TODO
-
-        });
+        $.get("/api/country/" + $("#countryselect").val() + "?" + $("#searchform").serialize(), draw_chart);
     });
 
 });
+
+function draw_chart(data) {
+    var countrycode = Object.keys(data)[0];
+    var zipped = zip(data[countrycode]);
+    var years  = zipped[0],
+        values = zipped[1];
+
+
+    var ctx = document.getElementById("chart").getContext("2d");
+    var chart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: years,
+            datasets: [{
+                label: countrycode,
+                data: values
+            }]
+        }
+
+    });
+}
+
+function zip(arrays) {
+    return arrays[0].map(function(_,i){
+        return arrays.map(function(array){return array[i]})
+    });
+}
