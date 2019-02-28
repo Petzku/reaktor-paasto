@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 import database
 import handle_csv
 import data_fetch
@@ -11,8 +11,7 @@ def create_app():
 
     @app.route('/')
     def index():
-        # TODO
-        return "index page"
+        return render_template("index.html")
 
     @app.route('/api/all')
     def request_all_countries():
