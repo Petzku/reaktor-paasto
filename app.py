@@ -64,16 +64,19 @@ def create_app():
         }
         return jsonify(response_data)
 
+    database.initialize_database()
+    update_data(force=True)
+
     return app
 
 
-def update_data():
+def update_data(force=False):
     """ checks to see if data needs updating, and update if so
     currently updates daily, could maybe be less frequent """
 
     last_update_str, = database.get_database_updated()  # returns a 1-tuple, unpack it
     last_update = datetime.date.fromisoformat(last_update_str)
-    if last_update < datetime.date.today():
+    if last_update < datetime.date.today() or force:
         popfile, co2file, countryfile = data_fetch.get_dataset_files()
 
         new_data = handle_csv.load_data(popfile, co2file, countryfile)
