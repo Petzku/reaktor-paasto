@@ -19,3 +19,8 @@ Toteutus
 --------
 
 Backend pythonilla, käyttäen flaskia. Frontend HTML-sivu, joka lataa AJAX:lla tiedot.
+
+Ajaminen
+--------
+
+Ajaaksesi sovelluksen: `pipenv install && pipenv run gunicorn 'app:create_app()'`.
