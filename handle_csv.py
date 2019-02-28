@@ -2,7 +2,7 @@
 import csv
 
 
-def read_data_csv(csvfile):
+def read_csv(csvfile):
     data = []
     reader = csv.DictReader(csvfile)
     for row in reader:
@@ -10,18 +10,10 @@ def read_data_csv(csvfile):
     return data
 
 
-def read_metadata_csv(csvfile):
-    metadata = []
-    reader = csv.DictReader(csvfile)
-    for row in reader:
-        metadata.append(row)
-    return metadata
-
-
 def load_data(popfile, co2file, countryfile):
-    popdata = {x["Country Code"]: x for x in read_data_csv(popfile)}
-    co2data = {x["Country Code"]: x for x in read_data_csv(co2file)}
-    countrydata = read_metadata_csv(countryfile)
+    popdata = {x["Country Code"]: x for x in read_csv(popfile)}
+    co2data = {x["Country Code"]: x for x in read_csv(co2file)}
+    countrydata = read_csv(countryfile)
 
     countries = {}
     for row in countrydata:
