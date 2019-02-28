@@ -9,18 +9,18 @@ import datetime
 def create_app():
     app = Flask(__name__)
 
-    @app.route('/')
+    @app.route("/")
     def index():
         return render_template("index.html")
 
-    @app.route('/api/all')
+    @app.route("/api/all")
     def request_all_countries():
         """ get information about all countries """
         update_data()
 
-        year_start = int(request.args.get('start', 0) or 0)
-        year_end = int(request.args.get('end', 0) or 0)
-        per_capita = bool(request.args.get('percapita', None))
+        year_start = int(request.args.get("start", 0) or 0)
+        year_end = int(request.args.get("end", 0) or 0)
+        per_capita = bool(request.args.get("percapita", None))
 
         data = database.get_all_countries_data(year_start, year_end, per_capita)
 
@@ -32,16 +32,18 @@ def create_app():
 
         return jsonify(data_by_code)
 
-    @app.route('/api/country/<country_code>')
+    @app.route("/api/country/<country_code>")
     def request_one_country(country_code):
         """ get information about a single country """
         update_data()
 
-        year_start = int(request.args.get('start', 0) or 0)
-        year_end = int(request.args.get('end', 0) or 0)
-        per_capita = bool(request.args.get('percapita', None))
+        year_start = int(request.args.get("start", 0) or 0)
+        year_end = int(request.args.get("end", 0) or 0)
+        per_capita = bool(request.args.get("percapita", None))
 
-        data = database.get_one_country_data(country_code, year_start, year_end, per_capita)
+        data = database.get_one_country_data(
+            country_code, year_start, year_end, per_capita
+        )
 
         data_by_code = {data[0][0]: []}
         for code, year, value in data:
@@ -49,18 +51,21 @@ def create_app():
 
         return jsonify(data_by_code)
 
-    @app.route('/api/meta/all')
+    @app.route("/api/meta/all")
     def request_country_metadata():
         """ get metadata of all countries """
         update_data()
 
         metadata = database.get_countries_info()
 
-        response_data = {code: {'name': name, 'region': region, 'income': income, 'notes': notes}
-                         for name,code,region,income,notes in metadata}
+        response_data = {
+            code: {"name": name, "region": region, "income": income, "notes": notes}
+            for name, code, region, income, notes in metadata
+        }
         return jsonify(response_data)
 
     return app
+
 
 def update_data():
     """ checks to see if data needs updating, and update if so

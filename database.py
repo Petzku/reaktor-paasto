@@ -3,6 +3,7 @@ import sqlite3
 
 DB_FILE = "co2_population_data.db"
 
+
 def initialize_database():
     conn = sqlite3.connect(DB_FILE)
     cur = conn.cursor()
@@ -10,23 +11,28 @@ def initialize_database():
     cur.execute("DROP TABLE IF EXISTS country_data")
     cur.execute("DROP TABLE IF EXISTS country_meta")
     cur.execute("DROP TABLE IF EXISTS last_updated")
-    
-    cur.execute("CREATE TABLE country_data( \
+
+    cur.execute(
+        "CREATE TABLE country_data( \
                     code TEXT PRIMARY KEY,  \
                     year INTEGER NOT NULL,  \
                     co2 REAL,               \
-                    population INTEGER )")
-    cur.execute("CREATE TABLE country_meta( \
+                    population INTEGER )"
+    )
+    cur.execute(
+        "CREATE TABLE country_meta( \
                     code TEXT PRIMARY KEY,  \
                     name TEXT NOT NULL,     \
                     region TEXT NOT NULL,   \
                     income TEXT NOT NULL,   \
-                    notes TEXT )")
+                    notes TEXT )"
+    )
     cur.execute("CREATE TABLE last_updated( updated DATE )")
     cur.execute("INSERT INTO last_updated VALUES (date('now'))")
 
     conn.commit()
     conn.close()
+
 
 def get_all_countries_data(year_start=None, year_end=None, per_capita=False):
     conn = sqlite3.connect(DB_FILE)
@@ -43,7 +49,10 @@ def get_all_countries_data(year_start=None, year_end=None, per_capita=False):
     conn.close()
     return result
 
-def get_one_country_data(country_code, year_start=None, year_end=None, per_capita=False):
+
+def get_one_country_data(
+    country_code, year_start=None, year_end=None, per_capita=False
+):
     conn = sqlite3.connect(DB_FILE)
     cur = conn.cursor()
 
@@ -58,6 +67,7 @@ def get_one_country_data(country_code, year_start=None, year_end=None, per_capit
     conn.close()
     return result
 
+
 def get_countries_info():
     conn = sqlite3.connect(DB_FILE)
     cur = conn.cursor()
@@ -68,6 +78,7 @@ def get_countries_info():
     conn.close()
     return result
 
+
 def update_database(csv_data):
     conn = sqlite3.connect(DB_FILE)
     cur = conn.cursor()
@@ -76,25 +87,35 @@ def update_database(csv_data):
     # The whole dataset in csv form is under 400KB, so it shouldn't matter much
     cur.execute("DROP TABLE IF EXISTS country_data")
     cur.execute("DROP TABLE IF EXISTS country_meta")
-    
-    cur.execute("CREATE TABLE country_data( \
+
+    cur.execute(
+        "CREATE TABLE country_data( \
                     code TEXT NOT NULL,     \
                     year INTEGER NOT NULL,  \
                     co2 REAL,               \
-                    population INTEGER )")
-    cur.execute("CREATE TABLE country_meta( \
+                    population INTEGER )"
+    )
+    cur.execute(
+        "CREATE TABLE country_meta( \
                     code TEXT PRIMARY KEY,  \
                     name TEXT NOT NULL,     \
                     region TEXT NOT NULL,   \
                     income TEXT NOT NULL,   \
-                    notes TEXT )")
+                    notes TEXT )"
+    )
 
     for country_code in csv_data:
         row = csv_data[country_code]
-        cur.execute("INSERT INTO country_meta VALUES (?,?,?,?,?)", (country_code, row['name'], row['region'], row['income'], row['notes']))
-        for year in row['data']:
-            co2, population = row['data'][year]
-            cur.execute("INSERT INTO country_data VALUES (?,?,?,?)", (country_code, year, co2, population))
+        cur.execute(
+            "INSERT INTO country_meta VALUES (?,?,?,?,?)",
+            (country_code, row["name"], row["region"], row["income"], row["notes"]),
+        )
+        for year in row["data"]:
+            co2, population = row["data"][year]
+            cur.execute(
+                "INSERT INTO country_data VALUES (?,?,?,?)",
+                (country_code, year, co2, population),
+            )
 
     cur.execute("UPDATE last_updated SET updated=date('now')")
 
