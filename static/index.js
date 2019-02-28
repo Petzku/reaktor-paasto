@@ -9,6 +9,7 @@ $(document).ready(function(){
     $("form#searchform").submit(function(e) {
         e.preventDefault();
 
+
         $.get("/api/country/" + $("#countryselect").val() + "?" + $("#searchform").serialize(), draw_chart);
     });
 
@@ -20,6 +21,9 @@ function draw_chart(data) {
     var years  = zipped[0],
         values = zipped[1];
 
+
+    var ispercapita = $("input[name=percapita]").is(":checked");
+    var yaxislabel = ispercapita ? "CO2 emissions per capita (kt)" : "CO2 emissions (kt)";
 
     var ctx = document.getElementById("chart").getContext("2d");
     var chart = new Chart(ctx, {
@@ -33,6 +37,14 @@ function draw_chart(data) {
         },
         options: {
             maintainAspectRatio: false,
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: yaxislabel
+                    }
+                }]
+            }
         }
     });
 }
