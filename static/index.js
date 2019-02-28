@@ -32,7 +32,9 @@ function draw_chart(data) {
             labels: years,
             datasets: [{
                 label: countrycode,
-                data: values
+                fill: false,
+                data: values,
+                borderColor: 'red',
             }]
         },
         options: {
