@@ -30,8 +30,10 @@ function draw_chart(data) {
                 label: countrycode,
                 data: values
             }]
+        },
+        options: {
+            maintainAspectRatio: false,
         }
-
     });
 }
 
