@@ -19,8 +19,8 @@ def create_app():
         """ get information about all countries """
         update_data()
 
-        year_start = int(request.args.get('start', 0))
-        year_end = int(request.args.get('end', 0))
+        year_start = int(request.args.get('start', 0) or 0)
+        year_end = int(request.args.get('end', 0) or 0)
         per_capita = bool(request.args.get('percapita', None))
 
         data = database.get_all_countries_data(year_start, year_end, per_capita)
@@ -31,8 +31,8 @@ def create_app():
         """ get information about a single country """
         update_data()
 
-        year_start = int(request.args.get('start', 0))
-        year_end = int(request.args.get('end', 0))
+        year_start = int(request.args.get('start', 0) or 0)
+        year_end = int(request.args.get('end', 0) or 0)
         per_capita = bool(request.args.get('percapita', None))
 
         data = database.get_one_country_data(country_code, year_start, year_end, per_capita)
